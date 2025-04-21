@@ -7,11 +7,11 @@ resources:
   - prometheus-instance.yml
   - prometheus-podmonitor.yml
   - prometheus-example-app-deployment.yml
-  - blackbox-cm.yaml
-  - blackbox-deployment.yaml
-  - blackbox-svc.yaml
-  - app-example-2.yaml
-  - grafana-deployment.yaml
+  - blackbox-cm.yml
+  - blackbox-deployment.yml
+  - blackbox-svc.yml
+  - app-example-2.yml
+  - grafana-deployment.yml
 secretGenerator:
   - files:
       - prometheus-scrape-configs.yml
