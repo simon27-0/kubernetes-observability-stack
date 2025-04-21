@@ -1,0 +1,56 @@
+- job_name: "prometheus"
+  static_configs:
+    - targets: ["localhost:9090"]
+
+- job_name: 'kubernetes-pods'
+  honor_labels: true
+  kubernetes_sd_configs:
+  - role: pod
+  relabel_configs: 
+  - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+    action: keep
+    regex: enable
+    # set metrics_path (default is /metrics) to the metrics path specified in "prometheus.io/path: <metric path>" annotation.
+  - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+    action: replace
+    target_label: __metrics_path__
+    regex: (.+)
+    # set the scrapping port to the port specified in "prometheus.io/port: <port>" annotation and set address accordingly.
+  - source_labels: [__address__ __meta_kubernetes_pod_annotation_prometheus_io_port]
+    action: replace
+    regex: ([^:]+)(?::\d+)?;(\d+)
+    replacement: $1:$2
+    target_label: __address__
+  - action: labelmap
+    regex: __meta_kubernetes_pod_label_(.+)
+  - source_labels: [__meta_kubernetes_namespace]
+    action: replace
+    target_label: kubernetes_namespace
+  - source_labels: [__meta_kubernetes_pod_name]
+    action: replace
+    target_label: kubernetes_pod_name
+
+
+# Ingress Blackbox-exporter
+- job_name: 'kubernetes-ingress-blackbox'
+  metrics_path: /probe
+  params:
+    module: [http_endpoint]
+  kubernetes_sd_configs:
+    - role: ingress
+  relabel_configs:
+    - source_labels: [__meta_kubernetes_ingress_annotation_blackbox_io_probe]
+      action: keep
+      regex: enable
+    - source_labels: [__meta_kubernetes_ingress_scheme, __meta_kubernetes_ingress_host]
+      regex: (.+);(.+)
+      replacement: ${1}://${2}
+      target_label: __param_target
+    # Cluster  
+    - target_label: __address__
+      replacement: "blackbox-exporter.devops-sandbox.svc:9115"
+    # Minikube
+    # - target_label: __address__
+    #   replacement: "blackbox-exporter.monitoring.svc.cluster.local:9115"      
+    - source_labels: [__param_target]
+      target_label: instance

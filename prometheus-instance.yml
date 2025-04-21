@@ -1,0 +1,22 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+spec:
+  serviceAccountName: prometheus
+  podMonitorSelector: 
+    matchLabels:
+      app: prometheus-simon
+  podMonitorNamespaceSelector: {}
+  serviceMonitorSelector:
+    matchLabels:
+      app: prometheus-simon
+  serviceMonitorNamespaceSelector: {}
+  probeSelector:
+    matchLabels:
+      app: prometheus-simon  
+  probeNamespaceSelector: {}
+  additionalScrapeConfigs:
+    name: prometheus-scrape-configs
+    key: prometheus-scrape-configs.yml
