@@ -6,7 +6,7 @@ resources:
   - prometheus-rbac.yml
   - prometheus-instance.yml
   - prometheus-podmonitor.yml
-  - prometheus-example-app-deployment.yml
+  - app-example.yml
   - blackbox-cm.yml
   - blackbox-deployment.yml
   - blackbox-svc.yml
