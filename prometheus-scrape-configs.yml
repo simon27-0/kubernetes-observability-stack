@@ -54,3 +54,27 @@
     #   replacement: "blackbox-exporter.monitoring.svc.cluster.local:9115"      
     - source_labels: [__param_target]
       target_label: instance
+
+- job_name: 'gce-vm-node-exporter'
+  gce_sd_configs:
+  - project: amartha-dev
+    zone: asia-southeast2-a
+    refresh_interval: 1m
+    port: 9100
+    tag_separator: ','
+  relabel_configs:
+    - source_labels: [__meta_gce_label_monitor_prometheus]
+      separator: ;
+      regex: "true"
+      replacement: $1
+      action: keep
+    - source_labels: [__address__]
+      separator: ;
+      target_label: container
+      replacement: node-exporter
+      action: replace
+    - source_labels: [__address__]
+      separator: ;
+      target_label: service
+      replacement: prometheus-node-exporter
+      action: replace

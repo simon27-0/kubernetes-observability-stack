@@ -5,13 +5,15 @@ namespace: devops-sandbox
 resources:
   - prometheus-rbac.yml
   - prometheus-instance.yml
-  - prometheus-podmonitor.yml
+  # - prometheus-podmonitor.yml
   - app-example.yml
   - blackbox-cm.yml
   - blackbox-deployment.yml
   - blackbox-svc.yml
   - app-example-2.yml
   - grafana-deployment.yml
+  - app-example-3.yml
+  # - prometheus-sa.yml
 secretGenerator:
   - files:
       - prometheus-scrape-configs.yml

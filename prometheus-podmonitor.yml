@@ -2,10 +2,11 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: prometheus
+  labels:
+    app: prometheus-simon
 spec:
   selector:
     matchLabels:
-      app: prometheus-simon
-      app.kubernetes.io/instance: prometheus-simon
+      app.kubernetes.io/name: prometheus-example-app  
   podMetricsEndpoints:
     - port: web

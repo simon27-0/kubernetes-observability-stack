@@ -8,10 +8,12 @@ spec:
   podMonitorSelector: 
     matchLabels:
       app: prometheus-simon
-  podMonitorNamespaceSelector: {}
-  serviceMonitorSelector:
+  podMonitorNamespaceSelector: 
     matchLabels:
       app: prometheus-simon
+  serviceMonitorSelector: 
+    matchLabels:
+      app: prometheus-simon  
   serviceMonitorNamespaceSelector: {}
   probeSelector:
     matchLabels:

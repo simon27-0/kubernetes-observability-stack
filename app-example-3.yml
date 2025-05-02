@@ -2,24 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/name: app-example-2
-  name: app-example-2
+    app.kubernetes.io/name: app-example-3
+  name: app-example-3
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: app-example-2
+      app.kubernetes.io/name: app-example-3
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: app-example-2      
+        app.kubernetes.io/name: app-example-3      
       annotations:
         prometheus.io/scrape: "enable"
         prometheus.io/path: "/metrics"
         prometheus.io/port: "8080"
     spec:
       containers:
-      - name: app-example-2
+      - name: app-example-3
         image: quay.io/brancz/prometheus-example-app:v0.3.0
         ports:
         - name: web
@@ -29,14 +29,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-example-2-svc
+  name: app-example-3-svc
   labels:
-    app.kubernetes.io/name: app-example-2
+    app.kubernetes.io/name: app-example-3
   annotations:
     blackbox.io/probe: "true"
 spec:
   selector:
-    app.kubernetes.io/name: app-example-2
+    app.kubernetes.io/name: app-example-3
   ports:
     - port: 8080
       targetPort: 8080
@@ -50,21 +50,21 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     blackbox.io/probe: "enable"
     kubernetes.io/ingress.class: nginx-internal 
-  name: app-example-2-ingress
+  name: app-example-3-ingress
   namespace: devops-sandbox
 spec:
   rules:
-  - host: app-example-2.dev.amartha.id
+  - host: app-example-3.dev.amartha.id
     http:
       paths:
       - backend:
           service:
-            name: app-example-2-svc
+            name: app-example-3-svc
             port:
               number: 8080
         path: /
         pathType: Prefix
   tls:
   - hosts:
-    - app-example-2.dev.amartha.id
-    secretName: app-example-2-amartha-id-tls         
+    - app-example-3.dev.amartha.id
+    secretName: app-example-3-amartha-id-tls         
